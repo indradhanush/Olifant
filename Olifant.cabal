@@ -1,0 +1,74 @@
+name:                Olifant
+version:             0.0.0.1
+-- synopsis:
+-- description:
+homepage:            https://github.com/jaseemabid/Olifant#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Jaseem Abid
+maintainer:          jaseemabid@gmail.com
+copyright:           MiT
+category:            Web
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Olifant
+                     , Olifant.Calculus
+                     , Olifant.Compiler
+                     , Olifant.Core
+                     , Olifant.Gen
+                     , Olifant.Parser
+  build-depends:       base >= 4.7 && < 5
+                     , bytestring
+                     , containers
+                     , llvm-hs
+                     , llvm-hs-pretty
+                     , llvm-hs-pure
+                     , mtl
+                     , parsec
+                     , protolude
+                     , tasty
+                     , tasty-hunit
+                     , text
+  default-language:    Haskell2010
+  ghc-options:         -Wall -fwarn-tabs
+  default-extensions:  NoImplicitPrelude, OverloadedStrings, DuplicateRecordFields
+
+executable olifant
+  hs-source-dirs:      exe
+  main-is:             CLI.hs
+  ghc-options:         -Wall -fwarn-tabs -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , filepath
+                     , protolude
+                     , Olifant
+  default-language:    Haskell2010
+  default-extensions:  NoImplicitPrelude, OverloadedStrings, DuplicateRecordFields
+
+test-suite Olifant-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Test.hs
+  other-modules:       Test
+                     , Test.Gen
+                     , Test.Parser
+  build-depends:       Olifant
+                     , base
+                     , bytestring
+                     , llvm-hs
+                     , llvm-hs-pretty
+                     , llvm-hs-pure
+                     , parsec
+                     , protolude
+                     , tasty
+                     , tasty-hunit
+  ghc-options:         -Wall -fwarn-tabs -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+  default-extensions:  NoImplicitPrelude, OverloadedStrings, DuplicateRecordFields
+
+source-repository head
+  type:     git
+  location: https://github.com/jaseemabid/Olifant

@@ -1,0 +1,9 @@
+resolver: lts-8.16
+
+extra-deps:
+  - llvm-hs-4.0.1.0
+
+packages:
+  - .
+  - location: llvm-hs-pretty
+    extra-dep: true

@@ -1,0 +1,71 @@
+* Brain dump
+
+** Why do I even need symbol tables?
+
+One of the dumb questions that went through my head a few days ago was the whole
+point of the symbol table. These are the simple reasons I need one.
+
+1. Disambiguate b/w values and functions. Even though they are the same at the
+   language level; they differ quite lot when the code is generated.
+2. Type checks
+3. Detect undefined variables
+4. Detect free variables and lambda lift them
+
+** Why do I need the load instruction?
+
+What can I not do with simple local variables like `%foo`?
+
+Quoting the docs,
+
+#+BEGIN_QUOTE
+Global variables define regions of memory allocated at compilation time instead
+of run-time. As SSA values, global variables define pointer values that are in
+scope (i.e. they dominate) all basic blocks in the program. Global variables
+always define a pointer to their “content” type because they describe a region
+of memory, and all memory objects in LLVM are accessed through pointers.
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+The ‘load‘ instruction is used to read from memory.
+#+END_QUOTE
+
+A super simple C program like
+
+#+BEGIN_SRC c
+  int x = 42;
+  int main() {
+      return x;
+  }
+#+END_SRC
+
+compiles to
+
+#+BEGIN_SRC llvm
+  @x = global i32 42, align 4
+
+  define i32 @main() #0 {
+    %1 = load i32, i32* @x, align 4
+    ret i32 %1
+  }
+#+END_SRC
+
+Accessing the memory location directly with `ret i32 @x` returns the error
+
+#+BEGIN_EXAMPLE
+hello.ll:13:11: error: global variable reference must have pointer type
+  ret i32 @x
+          ^
+#+END_EXAMPLE
+
+** The big reading list [1/2]
+
+- [ ] [[http://www.aosabook.org/en/ghc.html][The Architecture of Open Source Applications | GHC]]
+
+  Quick introduction to the various stages of compilation in the GHC compiler.
+
+- [X] The AST Typing problem [2/2]
+
+  About designing a well typed IR
+
+  - [X] [[http://lambda-the-ultimate.org/node/4170][The AST Typing Problem | Lambda the Ultimate]]
+  - [X] [[http://blog.ezyang.com/2013/05/the-ast-typing-problem/][The AST Typing Problem | Edward Z. Yang]]

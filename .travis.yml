@@ -1,4 +1,5 @@
 language: haskell
+dist: trusty
 sudo: false
 before_install:
   # Download and unpack the stack executable
